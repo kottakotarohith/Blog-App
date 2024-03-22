@@ -1,0 +1,94 @@
+#-------------------------author-------------------------------
+
+###author registration request
+POST  http://localhost:4000/author-api/author
+Content-Type: application/json
+
+{
+    "userType":"author",
+    "username":"author1",
+    "password":"author1",
+    "email":"author1@mail.com"
+}
+
+###author login request
+POST  http://localhost:4000/author-api/login
+Content-Type: application/json
+
+{
+    "userType":"author",
+    "username":"author1",
+    "password":"author1"
+}
+
+
+### add new  article by author
+POST  http://localhost:4000/author-api/article
+Content-Type: application/json
+
+{
+    "articleId":"{{$timestamp}}",
+    "title":"Fundamentals of JavaScript",
+    "category":"programming",
+    "content":"JavaScript is a high-level programming language that follows the ECMAScript standard. It was originally designed as a scripting language for websites but became widely adopted as a general-purpose programming language, and is currently the most popular programming language in use.[1] JavaScript is usually found running in a web browser as interactive or automated content, ranging from popup messages and live clocks to large web applications. JavaScript is also commonly used in server-side programming through platforms like Node.js,[2] or embedded in non-JavaScript applications where the base programming language lacks the high-level functionality that JavaScript offers.",
+    "dateOfCreation":"{{$datetime iso8601}}",
+    "dateOfModification":"{{$datetime iso8601}}",
+    "username":"author1",
+    "comments": [ ],
+    "status":true
+}
+
+### add new  article by author
+POST  http://localhost:4000/author-api/article
+Content-Type: application/json
+
+{
+    "articleId":"{{$timestamp}}",
+    "title":"ReactJS",
+    "category":"WebDevelopment",
+    "content":"Web development is the work involved in developing a website for the Internet (World Wide Web) or an intranet (a private network). Web development can range from developing a simple single static page of plain text to complex web applications, electronic businesses, and social network services.",
+    "dateOfCreation":"{{$datetime iso8601}}",
+    "dateOfModification":"{{$datetime iso8601}}",
+    "username":"author1",
+    "comments": [ ],
+    "status":true
+}
+
+
+
+### update article by author
+PUT   http://localhost:4000/author-api/article
+Content-Type: application/json
+
+{
+    "articleId":"1710326515",
+    "title":"Fundamentals of JavaScript",
+    "category":"programming",
+    "content":"JavaScript is a high-level programming language that follows the ECMAScript standard. It was originally designed as a scripting language for websites but became widely adopted as a general-purpose programming language, and is currently the most popular programming language in use.[1] JavaScript is usually found running in a web browser as interactive or automated content, ranging from popup messages and live clocks to large web applications. JavaScript is also commonly used in server-side programming through platforms like Node.js,.",
+    "dateOfCreation":"2024-03-13T10:41:55.835Z",
+    "dateOfModification":"{{$datetime iso8601}}",
+    "username":"author1",
+    "comments": [ ],
+    "status":true
+}
+
+
+### view artciles of author
+GET  http://localhost:4000/author-api/articles/author1
+
+
+### delete article of author (soft delete) by  article id
+PUT http://localhost:4000/author-api/article/1710326515
+Content-Type: application/json
+
+{
+    "articleId":"1710326515",
+    "title":"Fundamentals of JavaScript",
+    "category":"programming",
+    "content":"JavaScript is a high-level programming language that follows the ECMAScript standard. It was originally designed as a scripting language for websites but became widely adopted as a general-purpose programming language, and is currently the most popular programming language in use.[1] JavaScript is usually found running in a web browser as interactive or automated content, ranging from popup messages and live clocks to large web applications. JavaScript is also commonly used in server-side programming through platforms like Node.js,.",
+    "dateOfCreation":"2024-03-13T10:41:55.835Z",
+    "dateOfModification":"{{$datetime iso8601}}",
+    "username":"author1",
+    "comments": [ ],
+    "status":false
+}

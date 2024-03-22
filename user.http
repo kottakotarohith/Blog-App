@@ -1,0 +1,35 @@
+#------------------user---------------------
+###user registration request
+POST  http://localhost:4000/user-api/user
+Content-Type: application/json
+
+{
+    "userType":"user",
+    "username":"user2",
+    "password":"user2",
+    "email":"user2@mail.com"
+}
+
+###user login request
+POST  http://localhost:4000/user-api/login
+Content-Type: application/json
+
+{
+    "userType":"user",
+    "username":"user1",
+    "password":"user1"
+}
+
+###users viewing articles
+GET http://localhost:4000/user-api/articles
+
+
+### writing comments
+POST  http://localhost:4000/user-api/comment
+Content-Type: application/json
+
+{
+    "articleId":"1710326515",
+    "username":"user2",
+    "comment":"amazing content"
+}
