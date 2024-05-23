@@ -34,7 +34,7 @@ userApp.post('/user', expressAsyncHandler(async (req, res) => {
         //adding the user data to db
         await usersCollection.insertOne(newUser)
         //send res
-        res.send({ message: " new user created" })
+        res.send({ message: "new user created" })
     }
 
 }))
@@ -52,7 +52,7 @@ userApp.post('/login', expressAsyncHandler(async (req, res) => {
         if (!passwordMatch) {
             res.send({ message: "invalid password" })
         } else {
-            const signedToken = jwt.sign({ username: dbUser.username }, process.env.SECRET_KEY, { expiresIn: 20 })
+            const signedToken = jwt.sign({ username: dbUser.username }, process.env.SECRET_KEY, { expiresIn: '1d' })
             res.send({ message: "login successful", token: signedToken, user: dbUser })
         }
     }
@@ -70,12 +70,13 @@ userApp.get('/articles',verifyToken, expressAsyncHandler(async (req,res)=>{
 }))
 
 //writing comment
-userApp.post('/comment',verifyToken, expressAsyncHandler(async (req,res)=>{
+userApp.post('/comment/:articleId',verifyToken, expressAsyncHandler(async (req,res)=>{
 
     //get comment obj
     const commentObj = req.body;
+    const articleIdFromUrl = (+req.params.articleId)
     //insert comment obj to articles by articleId
-    let result = await articlesCollection.updateOne({articleId:commentObj.articleId},{$addToSet:{Comments:commentObj}})
+    let result = await articlesCollection.updateOne({articleId:articleIdFromUrl},{$addToSet:{comments:commentObj}})
     //send res
     console.log(result)
     res.send({message:"comment posted"})

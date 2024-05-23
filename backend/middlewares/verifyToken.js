@@ -18,6 +18,7 @@ const verifyToken = (req,res,next)=>{
     try{
         //verify the token using the same secret key
         jsonwebtoken.verify(token,process.env.SECRET_KEY)
+        next()
     }catch(err){
         //sending error to error handler middleware in server.js
         next(err)

@@ -4,7 +4,7 @@ POST  http://localhost:4000/user-api/user
 Content-Type: application/json
 
 {
-    "userType":"user",
+    "usertype":"user",
     "username":"user2",
     "password":"user2",
     "email":"user2@mail.com"
@@ -15,7 +15,7 @@ POST  http://localhost:4000/user-api/login
 Content-Type: application/json
 
 {
-    "userType":"user",
+    "usertype":"user",
     "username":"user1",
     "password":"user1"
 }
@@ -29,7 +29,7 @@ POST  http://localhost:4000/user-api/comment
 Content-Type: application/json
 
 {
-    "articleId":"1710326515",
-    "username":"user2",
+    "articleId":"1715626150953",
+    "username":"user1",
     "comment":"amazing content"
 }

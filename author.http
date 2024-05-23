@@ -5,10 +5,10 @@ POST  http://localhost:4000/author-api/author
 Content-Type: application/json
 
 {
-    "userType":"author",
-    "username":"author1",
-    "password":"author1",
-    "email":"author1@mail.com"
+    "usertype":"author",
+    "username":"author3",
+    "password":"author3",
+    "email":"author3@mail.com"
 }
 
 ###author login request
@@ -16,7 +16,7 @@ POST  http://localhost:4000/author-api/login
 Content-Type: application/json
 
 {
-    "userType":"author",
+    "usertype":"author",
     "username":"author1",
     "password":"author1"
 }

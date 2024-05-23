@@ -1,0 +1,27 @@
+.homePage {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url(../../images/photo-1432821596592-e2c18b78144f.avif);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.signupCard {
+  max-width: 400px;
+  width: 100%;
+  padding: 2rem;
+  background-color: rgba(197, 193, 193, 0.5);
+    border-radius: 0.5rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-check-inline {
+  margin-right: 1rem;
+}

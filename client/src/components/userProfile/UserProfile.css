@@ -1,0 +1,16 @@
+.userProfilebg{
+    min-height: 100vh;
+    /* background-image: url(../../images/user_profile_bg.avif); */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.articles  {
+    
+    border-radius: 5px;
+    background-image: url(../../images/profile_bg.avif);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }

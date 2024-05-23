@@ -5,7 +5,7 @@ const commonApp = require('./common-api')
 const bcryptjs = require('bcryptjs')
 const expressAsyncHandler = require('express-async-handler')
 const jwt = require('jsonwebtoken');
-const { AutoEncryptionLoggerLevel } = require('mongodb');
+const { AutoEncryptionLoggerLevel, ReturnDocument } = require('mongodb');
 const verifyToken = require('../middlewares/verifyToken')
 require('dotenv').config()
 
@@ -43,25 +43,23 @@ authorApp.post('/author',expressAsyncHandler( async (req,res)=>{
 }))
 
 //author login route
-authorApp.post('/login', expressAsyncHandler(async (req,res)=>{
-
-    //get author credentials
-    const authorCredentials = req.body
+authorApp.post('/login', expressAsyncHandler(async (req, res) => {
+    const authorCredentials = req.body;
+    const dbAuthor = await authorsCollection.findOne({ username: authorCredentials.username });
     //checking if author exists
-    const dbAuthor = await authorsCollection.findOne({username:authorCredentials.username})
-    if(dbAuthor==null){
-        res.send({message:"invalid author username"})
-    }else{
-        const passwordMatch = await bcryptjs.compare(authorCredentials.password, dbAuthor.password)
-        if(!passwordMatch){
-            res.send({message:"invalid password"})
-        }else{
-            const signedToken = jwt.sign({username:dbAuthor.username}, process.env.SECRET_KEY, {expiresIn:20})
-            res.send({message:"login successful", token: signedToken, author: dbAuthor})
+    if (!dbAuthor) {
+        res.send({ message: "invalid author username" });
+    } else {
+        const passwordMatch = await bcryptjs.compare(authorCredentials.password, dbAuthor.password);
+        if (!passwordMatch) {
+            res.send({ message: "invalid password" });
+        } else {
+            const signedToken = jwt.sign({ username: dbAuthor.username }, process.env.SECRET_KEY, { expiresIn: '1d' });
+            res.send({ message: "login successful", token: signedToken, user: dbAuthor });
         }
     }
+}));
 
-}))
 
 //add article by author
 authorApp.post('/article',verifyToken, expressAsyncHandler(async(req,res)=>{
@@ -82,8 +80,10 @@ authorApp.put('/article', verifyToken,expressAsyncHandler( async(req,res)=>{
     const modifiedArticle = req.body
     //update article by id
     let result = await articlesCollection.updateOne({articleId:modifiedArticle.articleId},{$set:{...modifiedArticle}})
-    
-    res.send({message:"article modified"})
+    //sending the latest article
+    let latestArticle = await articlesCollection.findOne({articleId:modifiedArticle.articleId})
+    //send res
+    res.send({message:"article modified" , article :latestArticle})
 
 }))
 
@@ -94,21 +94,29 @@ authorApp.get('/articles/:username',verifyToken, expressAsyncHandler( async (req
     const author = req.params.username
     //get articles of the author
     const articlesList = await articlesCollection.find({username:author}).toArray()
-    res.send({message:`articles of ${author}` ,payload: articlesList})
+    // console.log(articlesList)
+    res.send({message: `articles of ${author}` , payload: articlesList})
 
 }))
 
 //delete article of author (soft delete) by article id
 authorApp.put('/article/:articleId',verifyToken, expressAsyncHandler(async (req,res)=>{
-
+    
     //get article id
-    const articleIdFromURL = req.params.articleId
+    const articleIdFromURL = (+req.params.articleId)
     //get article
     const articleToDelete = req.body
-    // soft delete on article id i.e status=false
-    await articlesCollection.updateOne({articleId:articleIdFromURL},{$set:{...articleToDelete,status:false}})
-    //send response
-    res.send({message:"article removed"})
+    
+    if(articleToDelete.status==true){
+        let modifiedArt= await articlesCollection.findOneAndUpdate({ articleId: articleIdFromURL},{$set:{...articleToDelete,status:false}},{ returnDocument: 'after' })
+        // console.log(modifiedArt.status)
+        res.send({message:"article deleted", payload : modifiedArt.status ,  article : modifiedArt})
+     }
+     if(articleToDelete.status==false){
+         let modifiedArt= await articlesCollection.findOneAndUpdate({ articleId: articleIdFromURL},{$set:{...articleToDelete,status:true}},{ returnDocument: 'after' })
+        //  console.log(modifiedArt)
+         res.send({message:"article restored", payload : modifiedArt.status , article : modifiedArt})
+     }
 
 }))
 
